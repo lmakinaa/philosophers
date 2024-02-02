@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:07:55 by ijaija            #+#    #+#             */
-/*   Updated: 2024/01/25 12:29:20 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/01/31 13:38:07 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ int	args_parsing(int argc, char ***raw_argv, t_table *table)
 		table->times_must_eat = -1;
 	else if (argc == 6)
 		table->times_must_eat = custom_atoi(argv[5]);
-	table->start_time = time_now();
+	table->philos_created = 0;
 	return (0);
 }
