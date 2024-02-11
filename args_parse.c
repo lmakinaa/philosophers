@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args_parsing.c                                     :+:      :+:    :+:   */
+/*   args_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 15:07:55 by ijaija            #+#    #+#             */
-/*   Updated: 2024/01/31 13:38:07 by ijaija           ###   ########.fr       */
+/*   Created: 2024/02/09 15:47:10 by ijaija            #+#    #+#             */
+/*   Updated: 2024/02/10 20:01:09 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo.h"
+#include "philo.h"
 
 static int	ft_isdigit(int c)
 {
@@ -70,14 +70,21 @@ long	custom_atoi(const char *str)
 	return (part2(i, sign, str, passed));
 }
 
-int	args_parsing(int argc, char ***raw_argv, t_table *table)
+/*
+* It initialise the following variable :
+*	- philosophers number
+*	- time to die
+*	- time to eat
+*	- time to time
+*	- times must eat (-1 if no argument passed for it)
+*	- philos created = 0
+*/
+int	args_parse(int argc, char **argv, t_table *table)
 {
 	int		i;
-	char	**argv;
 	long	n;
 
 	i = 1;
-	argv = *raw_argv;
 	while (i < argc)
 	{
 		n = custom_atoi(argv[i]);
@@ -95,6 +102,5 @@ int	args_parsing(int argc, char ***raw_argv, t_table *table)
 		table->times_must_eat = -1;
 	else if (argc == 6)
 		table->times_must_eat = custom_atoi(argv[5]);
-	table->philos_created = 0;
 	return (0);
 }

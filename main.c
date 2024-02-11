@@ -5,58 +5,56 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 11:37:52 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/01 11:50:18 by ijaija           ###   ########.fr       */
+/*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
+/*   Updated: 2024/02/11 18:49:42 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo.h"
+#include "philo.h"
 
-void	f()
-{
-	system("leaks philo");
-}
-
-int preparing_table(int argc, char **argv, t_memslots *slots, t_table *table)
+int	monitoring(t_table *table)
 {
 	int	i;
+	int	flag;
 
-	if (!(argc == 5 || argc == 6))
-		return (printf("Invalide number of arguments\n"), -1);
-	if (args_parsing(argc, &argv, table) == -1)
-		return (printf("Error\n"), -1);
-	table->fork_lock = ultra_malloc(slots,
-		(table->philo_nbr + 1) * sizeof(pthread_mutex_t));
-	if (!table->fork_lock)
-		return (-1);
-	i = 1;
-	while (i <= table->philo_nbr)
+	flag = 0;
+	while (!flag)
 	{
-		if (pthread_mutex_init(&table->fork_lock[i], NULL) == -1)
-			return (printf("Error\n"), -1);
-		i++;
+		i = 0;
+		while (i < table->philo_nbr)
+		{
+			if (time_now() - table->philosophers[i].last_ate >= table->time_to_die
+				&& table->philosophers[i].last_ate != -1)
+			{
+				table->end_flag = 1;
+				printf("%ld-->someone died\n", time_now() - table->philosophers[i].last_ate);
+				flag = 1;
+				break;
+			}
+			i++;
+		}
 	}
-	if (pthread_mutex_init(&table->printing_lock, NULL) == -1)
-		return (printf("Error\n"), -1);
-	table->end_flag = 0;
-	table->start_time = 0;
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_table		table;
 	t_memslots	*slots;
+	t_table		table;
 
-	// atexit(f);
+	if (!(argc == 5 || argc == 6))
+		return (printf("Invalide number of arguments\n"), -1);
+
 	slots = session_init();
-
-	if (preparing_table(argc, argv, slots, &table) == -1)
-		return (end_session(&slots), 1);
-	if (gathering_around_table(&table, slots) == -1)
-		return (end_session(&slots), 1);
+	if (!slots)
+		return (printf("Error!\n"), 1);
+	if (args_parse(argc, argv, &table) == -1)
+		return (printf("Error while parsing the arguments!\n"), 1);
+	if (preparing_table(slots, &table) == -1)
+		return (printf("Error while preparing the table"), 1);
+	if (gathering_around_table(slots, &table))
+		return (printf("Error while gathering philosphers arount table"), 1);
+	monitoring(&table);
 	join_all(&table);
-	start_monitoring(&table);
 	end_session(&slots);
-	return (0);
 }

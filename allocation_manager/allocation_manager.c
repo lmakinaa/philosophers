@@ -17,6 +17,8 @@ t_memslots	*session_init(void)
 	t_memslots	*result;
 
 	result = malloc(sizeof(t_memslots));
+	if (!result)
+		return (NULL);
 	result->start = NULL;
 	result->allocations = 0;
 	result->end = NULL;

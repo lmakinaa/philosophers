@@ -3,7 +3,7 @@ CFLAGS=-Werror -Wextra -Wall
 GC_DIR=./allocation_manager
 GC_O=$(GC_DIR)/allocation_manager.o
 GC_H=$(GC_DIR)/allocation_manager.h
-PHILO_O=main.o args_parsing.o gathering_around_table.o utils.o
+PHILO_O=main.o args_parse.o gathering_around_table.o utils.o dinning.o preparing_table.o
 HEADER_H=philo.h
 NAME=philo
 
