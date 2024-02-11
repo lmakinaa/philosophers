@@ -5,58 +5,49 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 13:45:25 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/01 11:49:43 by ijaija           ###   ########.fr       */
+/*   Created: 2024/02/08 18:51:10 by ijaija            #+#    #+#             */
+/*   Updated: 2024/02/11 18:09:41 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./philo.h"
-#include "limits.h"
+#include "philo.h"
 
-void	*dinning(void *ptr)
+/*
+* It creates the philosophers and initialise the following variable :
+*	- id
+*	- left fork id
+*	- right fork id
+*	- times ate = 0
+*	- last time ate = -1
+*	- table
+*	- start_time = time_now()
+*	- philos_created_flag = 0 then $ = 1
+*/
+int	gathering_around_table(t_memslots *slots, t_table *table)
 {
-	t_philo	*philo;
+	int		i;
+	t_philo	*philos;
 
-	philo = ptr;
-	while (philo->table->philos_created != 1)
-		usleep(3);
-	if (philo->id % 2 == 0)
-		sleep_in_ms(philo->table->time_to_eat);
-	while (1)
-	{
-		if (philo->table->end_flag)
-			return (0);
-		eating(philo);
-		sleeping(philo);
-		thinking(philo);
-	}
-	return (0);
-}
-
-int	gathering_around_table(t_table *table, t_memslots *slots)
-{
-	int			i;
-	t_philo		*philosophers;
-
-	table->philos = ultra_malloc(slots, table->philo_nbr * sizeof(t_philo));
-	if (!table->philos)
-		return (printf("Error while gathering the philosophers.\n"), -1);
+	table->philosophers = ultra_malloc(slots,
+		table->philo_nbr * sizeof(t_table));
+	if (!table->philosophers)
+		return (-1);
+	table->philos_created_flag = 0;
 	i = 0;
-	philosophers = table->philos;
-	while (i + 1 <= table->philo_nbr)
+	philos = table->philosophers;
+	while (i < table->philo_nbr)
 	{
-		philosophers[i].id = i + 1;
-		philosophers[i].r_f = (i + 1) % table->philo_nbr;
-		philosophers[i].l_f = i ;
-		philosophers[i].table = table;
-		philosophers[i].last_eat = -1;
-		philosophers[i].times_ate = 0;
-		if (pthread_create(&(philosophers[i].thread), NULL, dinning,
-				&philosophers[i]) == -1)
-			return (printf("Error while gathering the philosophers.\n"), -1);
+		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
+			return (-1);
+		philos[i].id = i + 1;
+		philos[i].left_fork_id = i;
+		philos[i].right_fork_id = (i + 1) % table->philo_nbr;
+		philos[i].times_ate = 0;
+		philos[i].last_ate = -1;
+		philos[i].table = table;
 		i++;
 	}
 	table->start_time = time_now();
-	table->philos_created = 1;
+	table->philos_created_flag = 1;
 	return (0);
 }
