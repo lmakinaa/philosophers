@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:00:40 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 15:24:59 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:41:56 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 * Every philosopher will pass throught this function
-*
+* It has the routine : eat - sleep - think
 */
 void	*dinning(void *ptr)
 {
@@ -31,6 +31,9 @@ void	*dinning(void *ptr)
 		print("is sleeping", philo);
 		time_skip(philo, philo->table->time_to_sleep);
 		print("is thinking", philo);
+		if (philo->table->philo_nbr % 2 != 0)
+			time_skip(philo, philo->table->time_to_eat);
+			
 	}
 	return (0);
 }

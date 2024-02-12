@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 15:32:04 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:41:49 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,16 @@ int		gathering_around_table(t_memslots *slots, t_table *table);
 int		preparing_table(t_memslots *slots, t_table *table);
 void	*dinning(void *ptr);
 void	monitoring(t_table *table);
+int		destroy_mutexes(t_table *table);
+int		join_all(t_table *table);
+int		eating(t_philo *philo);
 
 // Some utils
 
 long	time_now(void);
 void	sleep_in_ms(long ms);
-int		eating(t_philo *philo);
 int		print(char *str, t_philo *philo);
 int		time_skip(t_philo *philo, long time_to_stop);
-int		join_all(t_table *table);
-int		destroy_mutexes(t_table *table);
 int		is_finished(t_philo *philo);
 int		did_he_died(t_philo *philo);
 
