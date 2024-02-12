@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 15:41:41 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:18:14 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ int	join_all(t_table *table)
 
 int	print(char *str, t_philo *philo)
 {
-	if (!str)
-		return (printf("Died\n"), 0);
 	pthread_mutex_lock(&philo->table->printing);
-	if (!is_finished(philo))
+	if (!is_finished(philo) || str[0] == 'd')
 		printf("%ld %d %s\n", time_now() - philo->table->start_time, philo->id, str);
 	pthread_mutex_unlock(&philo->table->printing);
 	return (0);
@@ -97,6 +95,7 @@ int	did_he_died(t_philo *philo)
 	pthread_mutex_lock(&philo->table->eat_lock);
 	if (time_now() - philo->last_ate >= philo->table->time_to_die)
 	{
+		print("died", philo);
 		pthread_mutex_lock(&philo->table->end_flag_lock);
 		philo->table->end_flag = 1;
 		pthread_mutex_unlock(&philo->table->end_flag_lock);
