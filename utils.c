@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/11 18:48:32 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:41:41 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,14 @@ int	join_all(t_table *table)
 	return (0);
 }
 
-int	must_die_or_not(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->table->end_flag_lock);
-	if (time_now() - philo->last_ate >= philo->table->time_to_die
-		&& philo->last_ate != -1)
-	{
-		philo->table->end_flag = 1;
-		pthread_mutex_unlock(&philo->table->end_flag_lock);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->table->end_flag_lock);
-	return (0);
-}
-
 int	print(char *str, t_philo *philo)
 {
+	if (!str)
+		return (printf("Died\n"), 0);
 	pthread_mutex_lock(&philo->table->printing);
 	if (!is_finished(philo))
 		printf("%ld %d %s\n", time_now() - philo->table->start_time, philo->id, str);
 	pthread_mutex_unlock(&philo->table->printing);
-	if (is_finished(philo))
-		exit(1);
 	return (0);
 }
 
@@ -81,6 +67,19 @@ int	time_skip(t_philo *philo, long time_to_stop)
 	return (0);
 }
 
+int	destroy_mutexes(t_table *table)
+{
+	int	i;
+	
+	pthread_mutex_destroy(&table->printing);
+	pthread_mutex_destroy(&table->eat_lock);
+	pthread_mutex_destroy(&table->end_flag_lock);
+	i = -1;
+	while (++i < table->philo_nbr)
+		pthread_mutex_destroy(&table->fork_locks[i]);
+	return (0);
+}
+
 int	is_finished(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->end_flag_lock);
@@ -90,5 +89,20 @@ int	is_finished(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->table->end_flag_lock);
+	return (0);
+}
+
+int	did_he_died(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->eat_lock);
+	if (time_now() - philo->last_ate >= philo->table->time_to_die)
+	{
+		pthread_mutex_lock(&philo->table->end_flag_lock);
+		philo->table->end_flag = 1;
+		pthread_mutex_unlock(&philo->table->end_flag_lock);
+		pthread_mutex_unlock(&philo->table->eat_lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->table->eat_lock);
 	return (0);
 }

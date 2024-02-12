@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:00:40 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/11 18:52:16 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:24:59 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,11 @@ void	*dinning(void *ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *) ptr;
-	while (philo->table->philos_created_flag != 1)
-		usleep(10);
 	if (philo->id % 2 == 0)
 		sleep_in_ms(philo->table->time_to_eat);
 	while (1)
 	{
-		if (is_finished(philo) == 1)
+		if (is_finished(philo))
 			return (0);
 		eating(philo);
 		print("is sleeping", philo);
@@ -45,21 +43,21 @@ int	eating(t_philo *philo)
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
-		print("has taken a fork", philo);
 		pthread_mutex_lock(&philo->table->fork_locks[philo->right_fork_id]);
-		print("has taken a fork", philo);
 	}
 	else
 	{
 		pthread_mutex_lock(&philo->table->fork_locks[philo->right_fork_id]);
-		print("has taken a fork", philo);
 		pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
-		print("has taken a fork", philo);
 	}
+	print("has taken a fork", philo);
+	print("has taken a fork", philo);
 	print("is eating", philo);
 	time_skip(philo, philo->table->time_to_eat);
+	pthread_mutex_lock(&philo->table->eat_lock);
 	philo->times_ate++;
 	philo->last_ate = time_now();
+	pthread_mutex_unlock(&philo->table->eat_lock);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork_id]);
 	return (0);
