@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:00:40 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 18:41:56 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:44:14 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	*dinning(void *ptr)
 		print("is thinking", philo);
 		if (philo->table->philo_nbr % 2 != 0)
 			time_skip(philo, philo->table->time_to_eat);
-			
 	}
 	return (0);
 }
