@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 16:41:49 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 18:54:25 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_table
 	long			time_to_sleep;
 	int				times_must_eat;
 	int				end_flag;
+	int				philos_that_ate_enough;
 	t_philo			*philosophers;
 	pthread_mutex_t	end_flag_lock;
 	pthread_mutex_t	*fork_locks;
@@ -65,6 +66,6 @@ void	sleep_in_ms(long ms);
 int		print(char *str, t_philo *philo);
 int		time_skip(t_philo *philo, long time_to_stop);
 int		is_finished(t_philo *philo);
-int		did_he_died(t_philo *philo);
+int		did_he_died_or_finished(t_philo *philo);
 
 #endif

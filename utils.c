@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 16:38:59 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 19:04:37 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	is_finished(t_philo *philo)
 	return (0);
 }
 
-int	did_he_died(t_philo *philo)
+int	did_he_died_or_finished(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->eat_lock);
 	if (time_now() - philo->last_ate >= philo->table->time_to_die)
@@ -101,6 +101,18 @@ int	did_he_died(t_philo *philo)
 		pthread_mutex_unlock(&philo->table->end_flag_lock);
 		pthread_mutex_unlock(&philo->table->eat_lock);
 		return (1);
+	}
+	else if (philo->times_ate >= philo->table->times_must_eat)
+	{
+		philo->table->philos_that_ate_enough++;
+		if (philo->table->philos_that_ate_enough >= philo->table->philo_nbr)
+		{
+			pthread_mutex_lock(&philo->table->end_flag_lock);
+			philo->table->end_flag = 1;
+			pthread_mutex_unlock(&philo->table->end_flag_lock);
+			pthread_mutex_unlock(&philo->table->eat_lock);
+			return (1);
+		}
 	}
 	pthread_mutex_unlock(&philo->table->eat_lock);
 	return (0);
