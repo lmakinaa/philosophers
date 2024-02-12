@@ -6,34 +6,79 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/11 18:49:42 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 15:42:11 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	monitoring(t_table *table)
+/*
+* It creates the philosophers and initialise the following variable :
+*	- id
+*	- left fork id
+*	- right fork id
+*	- times ate = 0
+*	- last time ate = -1
+*	- table
+*	- start_time = time_now()
+*/
+int	gathering_around_table(t_memslots *slots, t_table *table)
+{
+	int		i;
+	t_philo	*philos;
+
+	table->philosophers = ultra_malloc(slots,
+		table->philo_nbr * sizeof(t_table));
+	if (!table->philosophers)
+		return (-1);
+	i = 0;
+	philos = table->philosophers;
+	table->start_time = time_now(); 
+	while (i < table->philo_nbr)
+	{
+		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
+			return (-1);
+		philos[i].id = i + 1;
+		philos[i].left_fork_id = i;
+		philos[i].right_fork_id = (i + 1) % table->philo_nbr;
+		philos[i].times_ate = 0;
+		philos[i].last_ate = table->start_time;
+		philos[i].table = table;
+		i++;
+	}
+	return (0);
+}
+
+/*
+* Initialising the following variables :
+*	- fork locks mutexes
+*	- end_flag_lock mutex
+*	- end_flag = 0
+*/
+int	preparing_table(t_memslots *slots, t_table *table)
 {
 	int	i;
-	int	flag;
 
-	flag = 0;
-	while (!flag)
+	table->fork_locks = ultra_malloc(slots,
+		table->philo_nbr * sizeof(pthread_mutex_t));
+	if (!table->fork_locks)
+		return (end_session(&slots), -1);
+	i = 0;
+	while (i < table->philo_nbr)
 	{
-		i = 0;
-		while (i < table->philo_nbr)
-		{
-			if (time_now() - table->philosophers[i].last_ate >= table->time_to_die
-				&& table->philosophers[i].last_ate != -1)
-			{
-				table->end_flag = 1;
-				printf("%ld-->someone died\n", time_now() - table->philosophers[i].last_ate);
-				flag = 1;
-				break;
-			}
-			i++;
-		}
+		if (pthread_mutex_init(&table->fork_locks[i], NULL) != 0)
+			return (end_session(&slots), -1);
+		i++;
 	}
+	if (pthread_mutex_init(&table->end_flag_lock, NULL) != 0)
+		return (end_session(&slots), -1);
+	if (pthread_mutex_init(&table->printing, NULL) != 0)
+		return (end_session(&slots), -1);
+	if (pthread_mutex_init(&table->eat_lock, NULL) != 0)
+		return (end_session(&slots), -1);
+	if (pthread_mutex_init(&table->start_time_lock, NULL) != 0)
+		return (end_session(&slots), -1);
+	table->end_flag = 0;
 	return (0);
 }
 
@@ -54,7 +99,30 @@ int	main(int argc, char **argv)
 		return (printf("Error while preparing the table"), 1);
 	if (gathering_around_table(slots, &table))
 		return (printf("Error while gathering philosphers arount table"), 1);
+	
 	monitoring(&table);
 	join_all(&table);
+	destroy_mutexes(&table);
 	end_session(&slots);
+}
+
+void	monitoring(t_table *table)
+{
+	int	i;
+	int	loop_flag;
+
+	loop_flag = 0;
+	while (!loop_flag)
+	{
+		i = -1;
+		while (++i < table->philo_nbr)
+		{
+			if (did_he_died(&table->philosophers[i]))
+			{
+				print(NULL, NULL);
+				loop_flag = 1;
+				break;
+			}
+		}
+	}
 }

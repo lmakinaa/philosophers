@@ -1,0 +1,12 @@
+if nbr of meals == 0 ––> just return
+if nbr of philos is == 1 ––> a specefic function
+else ––> normal handle
+
+–––––––––––––––––––––––––––––––––––––––––
+
+*** Shared ressources are :
+    - end_flag
+    - printing
+    - forks
+    - start_time
+    - last_ate (the philosopher and the monitor share it)
