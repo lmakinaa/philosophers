@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 18:54:59 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 20:00:53 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 	t_philo	*philos;
 
 	table->philosophers = ultra_malloc(slots,
-		table->philo_nbr * sizeof(t_table));
+			table->philo_nbr * sizeof(t_table));
 	if (!table->philosophers)
 		return (-1);
 	i = 0;
@@ -67,7 +67,7 @@ void	monitoring(t_table *table)
 			if (did_he_died_or_finished(&table->philosophers[i]))
 			{
 				loop_flag = 1;
-				break;
+				break ;
 			}
 		}
 		usleep(10);
@@ -85,7 +85,7 @@ int	preparing_table(t_memslots *slots, t_table *table)
 	int	i;
 
 	table->fork_locks = ultra_malloc(slots,
-		table->philo_nbr * sizeof(pthread_mutex_t));
+			table->philo_nbr * sizeof(pthread_mutex_t));
 	if (!table->fork_locks)
 		return (end_session(&slots), -1);
 	i = 0;
@@ -114,7 +114,6 @@ int	main(int argc, char **argv)
 
 	if (!(argc == 5 || argc == 6))
 		return (printf("Invalide number of arguments\n"), -1);
-
 	slots = session_init();
 	if (!slots)
 		return (printf("Error!\n"), 1);
@@ -124,10 +123,8 @@ int	main(int argc, char **argv)
 		return (printf("Error while preparing the table"), 1);
 	if (gathering_around_table(slots, &table))
 		return (printf("Error while gathering philosphers arount table"), 1);
-	
 	monitoring(&table);
 	join_all(&table);
 	destroy_mutexes(&table);
 	end_session(&slots);
 }
-
