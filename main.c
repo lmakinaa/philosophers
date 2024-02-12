@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 15:42:11 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 16:06:29 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,30 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 		i++;
 	}
 	return (0);
+}
+
+/*
+* Infinite loop that checks if a philosopher died to send an end flag
+*/
+void	monitoring(t_table *table)
+{
+	int	i;
+	int	loop_flag;
+
+	loop_flag = 0;
+	while (!loop_flag)
+	{
+		i = -1;
+		while (++i < table->philo_nbr)
+		{
+			if (did_he_died(&table->philosophers[i]))
+			{
+				print(NULL, NULL);
+				loop_flag = 1;
+				break;
+			}
+		}
+	}
 }
 
 /*
@@ -106,23 +130,3 @@ int	main(int argc, char **argv)
 	end_session(&slots);
 }
 
-void	monitoring(t_table *table)
-{
-	int	i;
-	int	loop_flag;
-
-	loop_flag = 0;
-	while (!loop_flag)
-	{
-		i = -1;
-		while (++i < table->philo_nbr)
-		{
-			if (did_he_died(&table->philosophers[i]))
-			{
-				print(NULL, NULL);
-				loop_flag = 1;
-				break;
-			}
-		}
-	}
-}
