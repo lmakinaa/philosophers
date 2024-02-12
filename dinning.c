@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:00:40 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 18:44:14 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/12 19:59:48 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ void	*dinning(void *ptr)
 	return (0);
 }
 
+/*
+* This if statement is to avoid deadlocks like in this situation :
+* Philosopher 1 (odd) locks the right fork and waits for the left fork.
+* Philosopher 2 (even) locks the left fork and waits for the right fork.
+*/
 int	eating(t_philo *philo)
 {
-	// This if statement is to avoid deadlocks like in this situation :
-	// Philosopher 1 (odd) locks the right fork and waits for the left fork.
-	// Philosopher 2 (even) locks the left fork and waits for the right fork.
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
