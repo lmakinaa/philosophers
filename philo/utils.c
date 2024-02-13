@@ -51,9 +51,9 @@ int	print(char *str, t_philo *philo)
 	pthread_mutex_lock(&philo->table->printing);
 	if (!is_finished(philo) || str[0] == 'd')
 	{
-		if (!is_finished(philo) && str[3] == 't' && !philo->printed)
+		if (!is_finished(philo) && str[3] == 't' && !philo->think_print_flag)
 		{
-			philo->printed = 1;
+			philo->think_print_flag = 1;
 			pthread_mutex_unlock(&philo->table->printing);
 			return (0);
 		}

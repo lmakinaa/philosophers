@@ -24,8 +24,9 @@ void	*dinning(void *ptr)
 	if (philo->id % 2 == 0)
 	{
 		print("is thinking", philo);
-		philo->printed = 0;
-		time_skip(philo, 1);
+		philo->think_print_flag = 0;
+		// time_skip(philo, 1);
+		usleep(100);
 	}
 	while (1)
 	{
