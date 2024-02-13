@@ -25,6 +25,11 @@ void	*dinning(void *ptr)
 		sleep_in_ms(philo->table->time_to_eat);
 	while (1)
 	{
+		if (philo->table->philo_nbr == 1)
+		{
+			one_philo_dinner(philo);
+			return (0);
+		}
 		if (is_finished(philo))
 			return (0);
 		eating(philo);
@@ -64,5 +69,12 @@ int	eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->eat_lock);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork_id]);
+	return (0);
+}
+
+int	one_philo_dinner(t_philo *philo)
+{
+	print("has taken a fork", philo);
+	time_skip(philo, philo->table->time_to_die);
 	return (0);
 }

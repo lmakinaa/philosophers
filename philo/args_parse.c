@@ -102,5 +102,7 @@ int	args_parse(int argc, char **argv, t_table *table)
 		table->times_must_eat = -1;
 	else if (argc == 6)
 		table->times_must_eat = custom_atoi(argv[5]);
+	if (argc == 6 && table->times_must_eat == 0)
+		return (-2);
 	return (0);
 }
