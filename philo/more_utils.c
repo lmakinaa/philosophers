@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 20:02:55 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/13 13:35:38 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	did_he_died_or_finished(t_philo *philo)
 		pthread_mutex_unlock(&philo->table->eat_lock);
 		return (1);
 	}
-	else if (philo->times_ate >= philo->table->times_must_eat)
+	else if (philo->times_ate >= philo->table->times_must_eat
+		&& philo->table->times_must_eat != -1)
 	{
 		philo->table->philos_that_ate_enough++;
 		if (philo->table->philos_that_ate_enough >= philo->table->philo_nbr)
