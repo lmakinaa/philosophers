@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 20:00:53 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/13 14:59:12 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 	table->philos_that_ate_enough = 0;
 	while (i < table->philo_nbr)
 	{
-		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
-			return (-1);
 		philos[i].id = i + 1;
 		philos[i].left_fork_id = i;
 		philos[i].right_fork_id = (i + 1) % table->philo_nbr;
 		philos[i].times_ate = 0;
 		philos[i].last_ate = table->start_time;
 		philos[i].table = table;
+		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
+			return (-1);
 		i++;
 	}
 	return (0);
