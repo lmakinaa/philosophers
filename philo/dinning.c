@@ -57,11 +57,11 @@ int	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
 	print("has taken a fork", philo);
 	print("is eating", philo);
+	time_skip(philo, philo->table->time_to_eat);
 	pthread_mutex_lock(&philo->table->eat_lock);
 	philo->times_ate++;
 	philo->last_ate = time_now();
 	pthread_mutex_unlock(&philo->table->eat_lock);
-	time_skip(philo, philo->table->time_to_eat);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork_id]);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
 	return (0);
