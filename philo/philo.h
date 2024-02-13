@@ -67,5 +67,6 @@ int		print(char *str, t_philo *philo);
 int		time_skip(t_philo *philo, long time_to_stop);
 int		is_finished(t_philo *philo);
 int		did_he_died_or_finished(t_philo *philo);
+int		one_philo_dinner(t_philo *philo);
 
 #endif

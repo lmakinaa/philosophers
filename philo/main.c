@@ -119,6 +119,8 @@ int	main(int argc, char **argv)
 		return (printf("Error!\n"), 1);
 	if (args_parse(argc, argv, &table) == -1)
 		return (printf("Error while parsing the arguments!\n"), 1);
+	else if (args_parse(argc, argv, &table) == -2)
+		return (0);
 	if (preparing_table(slots, &table) == -1)
 		return (printf("Error while preparing the table"), 1);
 	if (gathering_around_table(slots, &table))
