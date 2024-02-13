@@ -50,8 +50,16 @@ int	print(char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->printing);
 	if (!is_finished(philo) || str[0] == 'd')
+	{
+		if (!is_finished(philo) && str[3] == 't' && !philo->printed)
+		{
+			philo->printed = 1;
+			pthread_mutex_unlock(&philo->table->printing);
+			return (0);
+		}
 		printf("%ld %d %s\n",
 			time_now() - philo->table->start_time, philo->id, str);
+	}
 	pthread_mutex_unlock(&philo->table->printing);
 	return (0);
 }
