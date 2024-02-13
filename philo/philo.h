@@ -23,13 +23,13 @@
 
 typedef struct s_philosopher
 {
-	int				printed;
 	int				id;
 	pthread_t		thread;
 	int				right_fork_id;
 	int				left_fork_id;
 	long			last_ate;
 	int				times_ate;
+	int				think_print_flag;
 	struct s_table	*table;
 }				t_philo;
 

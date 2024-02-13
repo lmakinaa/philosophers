@@ -38,7 +38,7 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 	while (i < table->philo_nbr)
 	{
 		philos[i].id = i + 1;
-		philos[i].printed = 1;
+		philos[i].think_print_flag = 1;
 		philos[i].left_fork_id = i;
 		philos[i].right_fork_id = (i + 1) % table->philo_nbr;
 		philos[i].times_ate = 0;
