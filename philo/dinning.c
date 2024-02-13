@@ -22,7 +22,7 @@ void	*dinning(void *ptr)
 
 	philo = (t_philo *) ptr;
 	if (philo->id % 2 == 0)
-		sleep_in_ms(philo->table->time_to_eat);
+		time_skip(philo, 1);
 	while (1)
 	{
 		if (philo->table->philo_nbr == 1)
@@ -36,8 +36,6 @@ void	*dinning(void *ptr)
 		print("is sleeping", philo);
 		time_skip(philo, philo->table->time_to_sleep);
 		print("is thinking", philo);
-		if (philo->table->philo_nbr % 2 != 0)
-			time_skip(philo, philo->table->time_to_eat);
 	}
 	return (0);
 }
@@ -49,26 +47,18 @@ void	*dinning(void *ptr)
 */
 int	eating(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
-		pthread_mutex_lock(&philo->table->fork_locks[philo->right_fork_id]);
-	}
-	else
-	{
-		pthread_mutex_lock(&philo->table->fork_locks[philo->right_fork_id]);
-		pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
-	}
+	pthread_mutex_lock(&philo->table->fork_locks[philo->right_fork_id]);
 	print("has taken a fork", philo);
+	pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
 	print("has taken a fork", philo);
 	print("is eating", philo);
-	time_skip(philo, philo->table->time_to_eat);
 	pthread_mutex_lock(&philo->table->eat_lock);
 	philo->times_ate++;
 	philo->last_ate = time_now();
 	pthread_mutex_unlock(&philo->table->eat_lock);
-	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
+	time_skip(philo, philo->table->time_to_eat);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork_id]);
+	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
 	return (0);
 }
 
