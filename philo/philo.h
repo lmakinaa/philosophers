@@ -23,6 +23,7 @@
 
 typedef struct s_philosopher
 {
+	int				printed;
 	int				id;
 	pthread_t		thread;
 	int				right_fork_id;

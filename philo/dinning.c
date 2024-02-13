@@ -22,7 +22,11 @@ void	*dinning(void *ptr)
 
 	philo = (t_philo *) ptr;
 	if (philo->id % 2 == 0)
+	{
+		print("is thinking", philo);
+		philo->printed = 0;
 		time_skip(philo, 1);
+	}
 	while (1)
 	{
 		if (philo->table->philo_nbr == 1)
@@ -32,10 +36,10 @@ void	*dinning(void *ptr)
 		}
 		if (is_finished(philo))
 			return (0);
+		print("is thinking", philo);
 		eating(philo);
 		print("is sleeping", philo);
 		time_skip(philo, philo->table->time_to_sleep);
-		print("is thinking", philo);
 	}
 	return (0);
 }
