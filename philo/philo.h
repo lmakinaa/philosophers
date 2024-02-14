@@ -30,6 +30,7 @@ typedef struct s_philosopher
 	long			last_ate;
 	int				times_ate;
 	int				think_print_flag;
+	int				eating;
 	struct s_table	*table;
 }				t_philo;
 

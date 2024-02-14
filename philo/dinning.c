@@ -25,8 +25,8 @@ void	*dinning(void *ptr)
 	{
 		print("is thinking", philo);
 		philo->think_print_flag = 0;
-		// time_skip(philo, 1);
-		usleep(100);
+		time_skip(philo, philo->table->time_to_eat);
+		// usleep(100);
 	}
 	while (1)
 	{
@@ -38,6 +38,8 @@ void	*dinning(void *ptr)
 		if (is_finished(philo))
 			return (0);
 		print("is thinking", philo);
+		if (philo->table->philo_nbr % 2)
+			time_skip(philo, philo->table->time_to_eat);
 		eating(philo);
 		print("is sleeping", philo);
 		time_skip(philo, philo->table->time_to_sleep);
@@ -56,12 +58,14 @@ int	eating(t_philo *philo)
 	print("has taken a fork", philo);
 	pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
 	print("has taken a fork", philo);
+	philo->eating = 1;
 	print("is eating", philo);
 	pthread_mutex_lock(&philo->table->eat_lock);
-	philo->times_ate++;
 	philo->last_ate = time_now();
+	philo->times_ate++;
 	pthread_mutex_unlock(&philo->table->eat_lock);
 	time_skip(philo, philo->table->time_to_eat);
+	philo->eating = 0;
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork_id]);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
 	return (0);
