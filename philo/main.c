@@ -34,7 +34,6 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 	i = 0;
 	philos = table->philosophers;
 	table->start_time = time_now();
-	table->philos_that_ate_enough = 0;
 	while (i < table->philo_nbr)
 	{
 		philos[i].id = i + 1;
@@ -63,6 +62,7 @@ void	monitoring(t_table *table)
 	while (!loop_flag)
 	{
 		i = -1;
+		table->philos_that_ate_enough = 0;
 		while (++i < table->philo_nbr)
 		{
 			if (did_he_died_or_finished(&table->philosophers[i]))
