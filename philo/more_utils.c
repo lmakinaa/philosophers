@@ -40,7 +40,7 @@ int	is_finished(t_philo *philo)
 int	did_he_died_or_finished(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->eat_lock);
-	if (time_now() - philo->last_ate >= philo->table->time_to_die)
+	if (time_now() - philo->last_ate >= philo->table->time_to_die && !philo->eating)
 	{
 		print("died", philo);
 		pthread_mutex_lock(&philo->table->end_flag_lock);
