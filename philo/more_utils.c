@@ -40,14 +40,14 @@ int	is_finished(t_philo *philo)
 int	did_he_died_or_finished(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->eat_lock);
-	if (time_now() - philo->last_ate >= philo->table->time_to_die && !philo->eating)
+	if (time_now() - philo->last_ate >= philo->table->time_to_die
+		&& !philo->eating)
 	{
 		print("died", philo);
 		pthread_mutex_lock(&philo->table->end_flag_lock);
 		philo->table->end_flag = 1;
 		pthread_mutex_unlock(&philo->table->end_flag_lock);
-		pthread_mutex_unlock(&philo->table->eat_lock);
-		return (1);
+		return (pthread_mutex_unlock(&philo->table->eat_lock), 1);
 	}
 	else if (philo->times_ate >= philo->table->times_must_eat
 		&& philo->table->times_must_eat != -1)
@@ -58,8 +58,7 @@ int	did_he_died_or_finished(t_philo *philo)
 			pthread_mutex_lock(&philo->table->end_flag_lock);
 			philo->table->end_flag = 1;
 			pthread_mutex_unlock(&philo->table->end_flag_lock);
-			pthread_mutex_unlock(&philo->table->eat_lock);
-			return (1);
+			return (pthread_mutex_unlock(&philo->table->eat_lock), 1);
 		}
 	}
 	pthread_mutex_unlock(&philo->table->eat_lock);
