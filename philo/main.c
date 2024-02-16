@@ -30,7 +30,7 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 	table->philosophers = ultra_malloc(slots,
 			table->philo_nbr * sizeof(t_table));
 	if (!table->philosophers)
-		return (-1);
+		return (end_session(&slots), -1);
 	i = 0;
 	philos = table->philosophers;
 	table->start_time = time_now();
@@ -45,7 +45,7 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 		philos[i].last_ate = table->start_time;
 		philos[i].table = table;
 		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
-			return (-1);
+			return (end_session(&slots), -1);
 		i++;
 	}
 	return (0);
@@ -118,12 +118,12 @@ int	main(int argc, char **argv)
 	if (!slots)
 		return (printf("Error!\n"), 1);
 	if (args_parse(argc, argv, &table) == -1)
-		return (printf("Error while parsing the arguments!\n"), 1);
+		return (end_session(&slots), printf("Error in parsing!\n"), 1);
 	else if (args_parse(argc, argv, &table) == -2)
-		return (0);
+		return (end_session(&slots), 0);
 	if (preparing_table(slots, &table) == -1)
 		return (printf("Error while preparing the table"), 1);
-	if (gathering_around_table(slots, &table))
+	if (gathering_around_table(slots, &table) == -1)
 		return (printf("Error while gathering philosphers arount table"), 1);
 	monitoring(&table);
 	join_all(&table);

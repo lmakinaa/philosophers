@@ -48,7 +48,6 @@ typedef struct s_table
 	pthread_mutex_t	end_flag_lock;
 	pthread_mutex_t	*fork_locks;
 	pthread_mutex_t	printing;
-	pthread_mutex_t	start_time_lock;
 	pthread_mutex_t	eat_lock;
 }				t_table;
 
