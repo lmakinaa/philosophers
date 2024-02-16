@@ -70,6 +70,6 @@ int	time_skip(t_philo *philo, long time_to_stop)
 
 	start = time_now();
 	while (time_now() - start < time_to_stop && !is_finished(philo))
-		usleep(100);
+		usleep(50);
 	return (0);
 }

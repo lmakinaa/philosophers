@@ -22,27 +22,18 @@ void	*dinning(void *ptr)
 
 	philo = (t_philo *) ptr;
 	if (philo->id % 2 == 0)
-	{
-		print("is thinking", philo);
-		philo->think_print_flag = 0;
-		time_skip(philo, philo->table->time_to_eat);
-		// usleep(100);
-	}
-	while (1)
+		time_skip(philo, 1);
+	while (!is_finished(philo))
 	{
 		if (philo->table->philo_nbr == 1)
 		{
 			one_philo_dinner(philo);
 			return (0);
 		}
-		if (is_finished(philo))
-			return (0);
-		print("is thinking", philo);
-		if (philo->table->philo_nbr % 2)
-			time_skip(philo, philo->table->time_to_eat);
 		eating(philo);
 		print("is sleeping", philo);
 		time_skip(philo, philo->table->time_to_sleep);
+		print("is thinking", philo);
 	}
 	return (0);
 }
