@@ -103,8 +103,6 @@ int	preparing_table(t_memslots *slots, t_table *table)
 		return (end_session(&slots), -1);
 	if (pthread_mutex_init(&table->eat_lock, NULL) != 0)
 		return (end_session(&slots), -1);
-	if (pthread_mutex_init(&table->start_time_lock, NULL) != 0)
-		return (end_session(&slots), -1);
 	table->end_flag = 0;
 	return (0);
 }
