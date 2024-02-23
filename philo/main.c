@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 23:57:59 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 00:01:59 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@
 *	- table
 *	- start_time = time_now()
 */
-int	gathering_around_table(t_memslots *slots, t_table *table)
+int	gathering_around_table(t_table *table)
 {
 	int		i;
 	t_philo	*philos;
 
-	table->philosophers = ultra_malloc(slots,
-			table->philo_nbr * sizeof(t_table));
+	table->philosophers = malloc(table->philo_nbr * sizeof(t_table));
 	if (!table->philosophers)
-		return (end_session(&slots), -1);
+		return (-1);
 	i = 0;
 	philos = table->philosophers;
 	table->start_time = time_now();
@@ -45,7 +44,7 @@ int	gathering_around_table(t_memslots *slots, t_table *table)
 		philos[i].last_ate = table->start_time;
 		philos[i].table = table;
 		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
-			return (end_session(&slots), -1);
+			return (-1);
 		i++;
 	}
 	return (0);
@@ -82,50 +81,44 @@ void	monitoring(t_table *table)
 *	- end_flag_lock mutex
 *	- end_flag = 0
 */
-int	preparing_table(t_memslots *slots, t_table *table)
+int	preparing_table(t_table *table)
 {
 	int	i;
 
-	table->fork_locks = ultra_malloc(slots,
-			table->philo_nbr * sizeof(pthread_mutex_t));
+	table->fork_locks = malloc(table->philo_nbr * sizeof(pthread_mutex_t));
 	if (!table->fork_locks)
-		return (end_session(&slots), -1);
+		return (-1);
 	i = 0;
 	while (i < table->philo_nbr)
 	{
 		if (pthread_mutex_init(&table->fork_locks[i], NULL) != 0)
-			return (end_session(&slots), -1);
+			return (-1);
 		i++;
 	}
 	if (pthread_mutex_init(&table->end_flag_lock, NULL) != 0)
-		return (end_session(&slots), -1);
+		return (-1);
 	if (pthread_mutex_init(&table->printing, NULL) != 0)
-		return (end_session(&slots), -1);
+		return (-1);
 	if (pthread_mutex_init(&table->eat_lock, NULL) != 0)
-		return (end_session(&slots), -1);
+		return (-1);
 	table->end_flag = 0;
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_memslots	*slots;
 	t_table		table;
 
 	if (!(argc == 5 || argc == 6))
 		return (printf("Invalide number of arguments\n"), -1);
-	slots = session_init();
-	if (!slots)
-		return (printf("Error!\n"), 1);
 	if (args_parse(argc, argv, &table) == -1)
-		return (end_session(&slots), printf("Error in parsing!\n"), 1);
+		return (printf("Error in parsing!\n"), 1);
 	else if (args_parse(argc, argv, &table) == -2)
-		return (end_session(&slots), 0);
-	if (preparing_table(slots, &table) == -1)
+		return (0);
+	if (preparing_table(&table) == -1)
 		return (printf("Error while preparing the table"), 1);
-	if (gathering_around_table(slots, &table) == -1)
+	if (gathering_around_table(&table) == -1)
 		return (printf("Error while gathering philosphers arount table"), 1);
 	monitoring(&table);
 	destroy_mutexes(&table);
-	end_session(&slots);
 }
