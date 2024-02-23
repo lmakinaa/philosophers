@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 18:54:25 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 00:03:22 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include "./allocation_manager/allocation_manager.h"
 
 typedef struct s_philosopher
 {
@@ -52,8 +51,8 @@ typedef struct s_table
 }				t_table;
 
 int		args_parse(int argc, char **argv, t_table *table);
-int		gathering_around_table(t_memslots *slots, t_table *table);
-int		preparing_table(t_memslots *slots, t_table *table);
+int		gathering_around_table(t_table *table);
+int		preparing_table(t_table *table);
 void	*dinning(void *ptr);
 void	monitoring(t_table *table);
 int		destroy_mutexes(t_table *table);
