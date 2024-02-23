@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 00:01:59 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 00:17:10 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	gathering_around_table(t_table *table)
 		philos[i].last_ate = table->start_time;
 		philos[i].table = table;
 		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
-			return (-1);
+			return (free(table->philosophers), -1);
 		i++;
 	}
 	return (0);
@@ -71,7 +71,7 @@ void	monitoring(t_table *table)
 				break ;
 			}
 		}
-		usleep(20);
+		usleep(100);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 23:58:17 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 00:15:05 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	destroy_mutexes(t_table *table)
 	i = -1;
 	while (++i < table->philo_nbr)
 		pthread_mutex_destroy(&table->fork_locks[i]);
+	free(table->philosophers);
 	return (0);
 }
 
@@ -41,8 +42,7 @@ int	is_finished(t_philo *philo)
 int	did_he_died_or_finished(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->eat_lock);
-	if (time_now() - philo->last_ate >= philo->table->time_to_die
-		&& !philo->eating)
+	if (time_now() - philo->last_ate > philo->table->time_to_die)
 	{
 		print("died", philo);
 		pthread_mutex_lock(&philo->table->end_flag_lock);
