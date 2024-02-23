@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:09:07 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 20:33:45 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/23 23:57:07 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,18 @@ int	dinning(t_philo *philo)
 		write(2, "Error while creating the verification thread\n", 45);
 		exit(1);
 	}
+	print(philo, "is thinking");
 	if (philo->id % 2 == 0)
 		time_skip(philo, 1);
 	while (!philo->table->end_flag)
 	{
+		print(philo, "is thinking");
 		eating(philo);
 		if (philo->times_ate >= philo->table->times_must_eat
 			&& philo->table->times_must_eat != -1)
 			break ;
 		print(philo, "is sleeping");
 		time_skip(philo, philo->table->time_to_sleep);
-		print(philo, "is thinking");
 	}
 	pthread_join(philo->die_check, NULL);
 	exit(0);
