@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 20:02:11 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 00:13:35 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,6 @@ int	print(char *str, t_philo *philo)
 	pthread_mutex_lock(&philo->table->printing);
 	if (!is_finished(philo) || str[0] == 'd')
 	{
-		if (!is_finished(philo) && str[3] == 't' && !philo->think_print_flag)
-		{
-			philo->think_print_flag = 1;
-			pthread_mutex_unlock(&philo->table->printing);
-			return (0);
-		}
 		printf("%ld %d %s\n",
 			time_now() - philo->table->start_time, philo->id, str);
 	}
