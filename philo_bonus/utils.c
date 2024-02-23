@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/12 20:02:11 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/23 20:34:08 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,43 +24,43 @@ long	time_now(void)
 	return (res);
 }
 
-int	join_all(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->philo_nbr)
-	{
-		pthread_join(table->philosophers[i].thread, NULL);
-		i++;
-	}
-	return (0);
-}
-
-int	print(char *str, t_philo *philo)
-{
-	pthread_mutex_lock(&philo->table->printing);
-	if (!is_finished(philo) || str[0] == 'd')
-	{
-		if (!is_finished(philo) && str[3] == 't' && !philo->think_print_flag)
-		{
-			philo->think_print_flag = 1;
-			pthread_mutex_unlock(&philo->table->printing);
-			return (0);
-		}
-		printf("%ld %d %s\n",
-			time_now() - philo->table->start_time, philo->id, str);
-	}
-	pthread_mutex_unlock(&philo->table->printing);
-	return (0);
-}
-
 int	time_skip(t_philo *philo, long time_to_stop)
 {
 	long	start;
 
 	start = time_now();
-	while (time_now() - start < time_to_stop && !is_finished(philo))
-		usleep(50);
+	while (time_now() - start < time_to_stop && !philo->table->end_flag)
+		usleep(100);
 	return (0);
+}
+
+int	init_semaphores(t_table *table)
+{
+	sem_unlink("printing_sem");
+	sem_unlink("check_sem");
+	sem_unlink("forks_sem");
+	table->printing = sem_open("printing_sem", O_CREAT, 0644, 1);
+	table->check = sem_open("check_sem", O_CREAT, 0644, 1);
+	table->forks = sem_open("forks_sem", O_CREAT, 0644, table->philo_nbr);
+	if (table->printing == SEM_FAILED
+		|| table->check == SEM_FAILED || table->forks == SEM_FAILED)
+	{
+		write(2, "Error while opening semaphores\n", 31);
+		exit(1);
+	}
+	return (0);
+}
+
+void	print(t_philo *philo, char *str)
+{
+	long	start;
+
+	sem_wait(philo->table->printing);
+	if (!philo->table->end_flag)
+	{
+		start = philo->table->start_time;
+		printf("%ld %d %s\n", time_now() - start, philo->id, str);
+	}
+	if (str[0] != 'd')
+		sem_post(philo->table->printing);
 }
