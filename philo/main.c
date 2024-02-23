@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/13 14:59:12 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/23 23:57:59 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ int	main(int argc, char **argv)
 	if (gathering_around_table(slots, &table) == -1)
 		return (printf("Error while gathering philosphers arount table"), 1);
 	monitoring(&table);
-	join_all(&table);
 	destroy_mutexes(&table);
 	end_session(&slots);
 }

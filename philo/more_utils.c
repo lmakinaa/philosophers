@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/13 13:35:38 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/23 23:58:17 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	destroy_mutexes(t_table *table)
 {
 	int	i;
 
+	join_all(table);
 	pthread_mutex_destroy(&table->printing);
 	pthread_mutex_destroy(&table->eat_lock);
 	pthread_mutex_destroy(&table->end_flag_lock);
