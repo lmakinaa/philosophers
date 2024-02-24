@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:09:39 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:30:09 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_philosopher
 	int				left_fork_id;
 	long			last_ate;
 	int				times_ate;
-	int				think_print_flag;
 	struct s_table	*table;
 }				t_philo;
 
@@ -43,10 +42,9 @@ typedef struct s_table
 	int				end_flag;
 	int				philos_that_ate_enough;
 	t_philo			*philosophers;
-	pthread_mutex_t	end_flag_lock;
+	pthread_mutex_t	checking;
 	pthread_mutex_t	*fork_locks;
 	pthread_mutex_t	printing;
-	pthread_mutex_t	eat_lock;
 }				t_table;
 
 int		args_parse(int argc, char **argv, t_table *table);
@@ -57,14 +55,14 @@ void	monitoring(t_table *table);
 int		destroy_mutexes(t_table *table);
 int		join_all(t_table *table);
 int		eating(t_philo *philo);
+void	safe_exit(t_table *table);
 
 // Some utils
 
 long	time_now(void);
-int		print(char *str, t_philo *philo);
-int		time_skip(t_philo *philo, long time_to_stop);
+void	print(char *str, t_philo *philo);
+int		time_skip(t_table *table, long time_to_stop);
 int		is_finished(t_philo *philo);
-int		did_he_died_or_finished(t_philo *philo);
 int		one_philo_dinner(t_philo *philo);
 
 #endif

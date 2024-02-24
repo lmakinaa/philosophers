@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:14:23 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:37:18 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	gathering_around_table(t_table *table)
 	while (i < table->philo_nbr)
 	{
 		philos[i].id = i + 1;
-		philos[i].think_print_flag = 1;
 		philos[i].left_fork_id = i;
 		philos[i].right_fork_id = (i + 1) % table->philo_nbr;
 		philos[i].times_ate = 0;
@@ -44,34 +43,11 @@ int	gathering_around_table(t_table *table)
 		philos[i].table = table;
 		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
 			return (free(table->fork_locks), free(table->philosophers), -1);
+		if (pthread_detach(philos[i].thread) != 0)
+			return (free(table->fork_locks), free(table->philosophers), -1);
 		i++;
 	}
 	return (0);
-}
-
-/*
-* Infinite loop that checks if a philosopher died to send an end flag
-*/
-void	monitoring(t_table *table)
-{
-	int	i;
-	int	loop_flag;
-
-	loop_flag = 0;
-	while (!loop_flag)
-	{
-		i = -1;
-		table->philos_that_ate_enough = 0;
-		while (++i < table->philo_nbr)
-		{
-			if (did_he_died_or_finished(&table->philosophers[i]))
-			{
-				loop_flag = 1;
-				break ;
-			}
-		}
-		usleep(100);
-	}
 }
 
 /*
@@ -94,11 +70,9 @@ int	preparing_table(t_table *table)
 			return (free(table->fork_locks), -1);
 		i++;
 	}
-	if (pthread_mutex_init(&table->end_flag_lock, NULL) != 0)
-		return (free(table->fork_locks), -1);
 	if (pthread_mutex_init(&table->printing, NULL) != 0)
 		return (free(table->fork_locks), -1);
-	if (pthread_mutex_init(&table->eat_lock, NULL) != 0)
+	if (pthread_mutex_init(&table->checking, NULL) != 0)
 		return (free(table->fork_locks), -1);
 	table->end_flag = 0;
 	return (0);
@@ -121,4 +95,33 @@ int	main(int argc, char **argv)
 	monitoring(&table);
 	destroy_mutexes(&table);
 	return (0);
+}
+
+void	monitoring(t_table *table)
+{
+	int	i;
+
+	while (!table->end_flag)
+	{
+		i = -1;
+		while (++i < table->philo_nbr && !table->end_flag)
+		{
+			pthread_mutex_lock(&table->checking);
+			if (time_now() - table->philosophers[i].last_ate > table->time_to_die)
+			{
+				print("died", &table->philosophers[i]);
+				table->end_flag = 1;
+				safe_exit(table);
+				return ;
+			}
+			pthread_mutex_unlock(&table->checking);
+			usleep(100);
+		}
+		i = 0;
+		while (i < table->philo_nbr && table->times_must_eat != -1
+			&& table->philosophers[i].times_ate >= table->times_must_eat)
+			i++;
+		if (table->philo_nbr == i)
+			return ;
+	}
 }
