@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:11:54 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:14:23 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,5 @@ int	main(int argc, char **argv)
 		return (write(2, "Error while gathering philosphers arount table", 46), 1);
 	monitoring(&table);
 	destroy_mutexes(&table);
+	return (0);
 }
