@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:07:20 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:09:37 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	gathering_around_table(t_table *table)
 	while (i < table->philo_nbr)
 	{
 		philos[i].id = i + 1;
-		philos[i].eating = 0;
 		philos[i].think_print_flag = 1;
 		philos[i].left_fork_id = i;
 		philos[i].right_fork_id = (i + 1) % table->philo_nbr;

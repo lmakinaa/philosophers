@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 11:22:48 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:08:37 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ typedef struct s_philosopher
 	long					last_ate;
 	int						times_ate;
 	pthread_t				die_check;
-	struct s_philosopher	*next_p;
-	struct s_philosopher	*prev_p;
 	struct s_table			*table;
 }				t_philo;
 
@@ -43,7 +41,6 @@ typedef struct s_table
 	long			time_to_sleep;
 	int				times_must_eat;
 	int				end_flag;
-	int				philos_that_ate_enough;
 	sem_t			*printing;
 	sem_t			*check;
 	sem_t			*forks;
