@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 17:37:18 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:38:07 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ int	main(int argc, char **argv)
 	else if (args_parse(argc, argv, &table) == -2)
 		return (0);
 	if (preparing_table(&table) == -1)
-		return (write(2, "Error while preparing the table", 31), 1);
+		return (write(2, "Error while preparing the table\n", 32), 1);
 	if (gathering_around_table(&table) == -1)
-		return (write(2, "Error while gathering philosphers arount table", 46), 1);
+		return (write(2, "Error while gathering philosphers\n", 35), 1);
 	monitoring(&table);
 	destroy_mutexes(&table);
 	return (0);
