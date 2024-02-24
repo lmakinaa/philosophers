@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 11:25:46 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:07:20 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	gathering_around_table(t_table *table)
 
 	table->philosophers = malloc(table->philo_nbr * sizeof(t_table));
 	if (!table->philosophers)
-		return (fre(table->fork_locks), -1);
+		return (free(table->fork_locks), -1);
 	i = 0;
 	philos = table->philosophers;
 	table->start_time = time_now();
