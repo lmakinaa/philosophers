@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 00:13:35 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:25:51 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,24 @@ int	join_all(t_table *table)
 	return (0);
 }
 
-int	print(char *str, t_philo *philo)
+void	print(char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->printing);
-	if (!is_finished(philo) || str[0] == 'd')
+	if (!philo->table->end_flag || str[0] == 'd')
 	{
 		printf("%ld %d %s\n",
 			time_now() - philo->table->start_time, philo->id, str);
 	}
-	pthread_mutex_unlock(&philo->table->printing);
-	return (0);
+	if (str[0] != 'd')
+		pthread_mutex_unlock(&philo->table->printing);
 }
 
-int	time_skip(t_philo *philo, long time_to_stop)
+int	time_skip(t_table *table, long time_to_stop)
 {
 	long	start;
 
 	start = time_now();
-	while (time_now() - start < time_to_stop && !is_finished(philo))
+	while (time_now() - start < time_to_stop && !table->end_flag)
 		usleep(50);
 	return (0);
 }

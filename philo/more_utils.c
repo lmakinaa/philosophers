@@ -6,20 +6,34 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 11:26:25 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:33:37 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	safe_exit(t_table *table)
+{
+	long	max;
+	long	start;
+
+	start = time_now();
+	if (table->time_to_eat > table->time_to_sleep)
+		max = table->time_to_eat;
+	else
+		max = table->time_to_sleep;
+	max = max + (max / 20);
+	while (time_now() - start < max)
+		usleep(50);
+}
+
 int	destroy_mutexes(t_table *table)
 {
 	int	i;
 
-	join_all(table);
+	// safe_exit(table);
 	pthread_mutex_destroy(&table->printing);
-	pthread_mutex_destroy(&table->eat_lock);
-	pthread_mutex_destroy(&table->end_flag_lock);
+	pthread_mutex_destroy(&table->checking);
 	i = -1;
 	while (++i < table->philo_nbr)
 		pthread_mutex_destroy(&table->fork_locks[i]);
@@ -30,39 +44,12 @@ int	destroy_mutexes(t_table *table)
 
 int	is_finished(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->end_flag_lock);
+	pthread_mutex_lock(&philo->table->checking);
 	if (philo->table->end_flag)
 	{
-		pthread_mutex_unlock(&philo->table->end_flag_lock);
+		pthread_mutex_unlock(&philo->table->checking);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->table->end_flag_lock);
-	return (0);
-}
-
-int	did_he_died_or_finished(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->table->eat_lock);
-	if (time_now() - philo->last_ate > philo->table->time_to_die)
-	{
-		print("died", philo);
-		pthread_mutex_lock(&philo->table->end_flag_lock);
-		philo->table->end_flag = 1;
-		pthread_mutex_unlock(&philo->table->end_flag_lock);
-		return (pthread_mutex_unlock(&philo->table->eat_lock), 1);
-	}
-	else if (philo->times_ate >= philo->table->times_must_eat
-		&& philo->table->times_must_eat != -1)
-	{
-		philo->table->philos_that_ate_enough++;
-		if (philo->table->philos_that_ate_enough >= philo->table->philo_nbr)
-		{
-			pthread_mutex_lock(&philo->table->end_flag_lock);
-			philo->table->end_flag = 1;
-			pthread_mutex_unlock(&philo->table->end_flag_lock);
-			return (pthread_mutex_unlock(&philo->table->eat_lock), 1);
-		}
-	}
-	pthread_mutex_unlock(&philo->table->eat_lock);
+	pthread_mutex_unlock(&philo->table->checking);
 	return (0);
 }

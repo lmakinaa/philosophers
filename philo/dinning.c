@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:00:40 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 00:13:17 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:26:18 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	*dinning(void *ptr)
 	philo = (t_philo *) ptr;
 	print("is thinking", philo);
 	if (philo->id % 2 == 0)
-		time_skip(philo, 1);
-	while (!is_finished(philo))
+		time_skip(philo->table, 1);
+	while (!philo->table->end_flag)
 	{
 		if (philo->table->philo_nbr == 1)
 		{
@@ -33,7 +33,7 @@ void	*dinning(void *ptr)
 		}
 		eating(philo);
 		print("is sleeping", philo);
-		time_skip(philo, philo->table->time_to_sleep);
+		time_skip(philo->table, philo->table->time_to_sleep);
 		print("is thinking", philo);
 	}
 	return (0);
@@ -45,12 +45,12 @@ int	eating(t_philo *philo)
 	print("has taken a fork", philo);
 	pthread_mutex_lock(&philo->table->fork_locks[philo->left_fork_id]);
 	print("has taken a fork", philo);
-	pthread_mutex_lock(&philo->table->eat_lock);
+	pthread_mutex_lock(&philo->table->checking);
 	philo->times_ate++;
 	print("is eating", philo);
 	philo->last_ate = time_now();
-	pthread_mutex_unlock(&philo->table->eat_lock);
-	time_skip(philo, philo->table->time_to_eat);
+	pthread_mutex_unlock(&philo->table->checking);
+	time_skip(philo->table, philo->table->time_to_eat);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->left_fork_id]);
 	pthread_mutex_unlock(&philo->table->fork_locks[philo->right_fork_id]);
 	return (0);
@@ -59,6 +59,6 @@ int	eating(t_philo *philo)
 int	one_philo_dinner(t_philo *philo)
 {
 	print("has taken a fork", philo);
-	time_skip(philo, philo->table->time_to_die);
+	time_skip(philo->table, philo->table->time_to_die);
 	return (0);
 }
