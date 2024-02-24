@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 11:50:09 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:13:36 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int	main(int argc, char **argv)
 	int			i;
 
 	if (!(argc == 5 || argc == 6))
-		return (printf("Invalide number of arguments\n"), -1);
+		return (write(2, "Invalide number of arguments\n", 29), -1);
 	if (args_parse(argc, argv, &table) == -1)
-		return (printf("Error in parsing!\n"), 1);
+		return (write(2, "Error in parsing!\n", 18), 1);
 	i = -1;
 	table.start_time = time_now();
 	while (++i < table.philo_nbr)

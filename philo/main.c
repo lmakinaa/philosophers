@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:09:37 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:11:54 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,15 +109,15 @@ int	main(int argc, char **argv)
 	t_table		table;
 
 	if (!(argc == 5 || argc == 6))
-		return (printf("Invalide number of arguments\n"), -1);
+		return (write(2, "Invalide number of arguments\n", 29), -1);
 	if (args_parse(argc, argv, &table) == -1)
-		return (printf("Error in parsing!\n"), 1);
+		return (write(2, "Error in parsing!\n", 18), 1);
 	else if (args_parse(argc, argv, &table) == -2)
 		return (0);
 	if (preparing_table(&table) == -1)
-		return (printf("Error while preparing the table"), 1);
+		return (write(2, "Error while preparing the table", 31), 1);
 	if (gathering_around_table(&table) == -1)
-		return (printf("Error while gathering philosphers arount table"), 1);
+		return (write(2, "Error while gathering philosphers arount table", 46), 1);
 	monitoring(&table);
 	destroy_mutexes(&table);
 }
