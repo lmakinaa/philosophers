@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 17:39:02 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 17:48:17 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,12 @@ void	monitoring(t_table *table)
 		while (++i < table->philo_nbr && !table->end_flag)
 		{
 			pthread_mutex_lock(&table->checking);
-			if (time_now() - table->philosophers[i].last_ate > table->time_to_die)
+			if (time_now() - table->philosophers[i].last_ate
+				> table->time_to_die)
 			{
 				print("died", &table->philosophers[i]);
 				table->end_flag = 1;
-				safe_exit(table);
-				return ;
+				return (safe_exit);
 			}
 			pthread_mutex_unlock(&table->checking);
 			usleep(100);
