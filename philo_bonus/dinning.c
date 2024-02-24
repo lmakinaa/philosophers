@@ -6,13 +6,13 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:09:07 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 23:59:22 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:32:29 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*check_if_died(void *ptr)
+void	*monitoring(void *ptr)
 {
 	t_philo	*philo;
 
@@ -56,7 +56,7 @@ void	eating(t_philo *philo)
 int	dinning(t_philo *philo)
 {
 	philo->last_ate = philo->table->start_time;
-	if (pthread_create(&philo->die_check, NULL, check_if_died, philo) == -1)
+	if (pthread_create(&philo->die_check, NULL, monitoring, philo) == -1)
 	{
 		write(2, "Error while creating the verification thread\n", 45);
 		exit(1);

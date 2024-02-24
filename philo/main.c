@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 00:17:10 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:25:46 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	gathering_around_table(t_table *table)
 
 	table->philosophers = malloc(table->philo_nbr * sizeof(t_table));
 	if (!table->philosophers)
-		return (-1);
+		return (fre(table->fork_locks), -1);
 	i = 0;
 	philos = table->philosophers;
 	table->start_time = time_now();
@@ -44,7 +44,7 @@ int	gathering_around_table(t_table *table)
 		philos[i].last_ate = table->start_time;
 		philos[i].table = table;
 		if (pthread_create(&philos[i].thread, NULL, dinning, &philos[i]) != 0)
-			return (free(table->philosophers), -1);
+			return (free(table->fork_locks), free(table->philosophers), -1);
 		i++;
 	}
 	return (0);
@@ -92,15 +92,15 @@ int	preparing_table(t_table *table)
 	while (i < table->philo_nbr)
 	{
 		if (pthread_mutex_init(&table->fork_locks[i], NULL) != 0)
-			return (-1);
+			return (free(table->fork_locks), -1);
 		i++;
 	}
 	if (pthread_mutex_init(&table->end_flag_lock, NULL) != 0)
-		return (-1);
+		return (free(table->fork_locks), -1);
 	if (pthread_mutex_init(&table->printing, NULL) != 0)
-		return (-1);
+		return (free(table->fork_locks), -1);
 	if (pthread_mutex_init(&table->eat_lock, NULL) != 0)
-		return (-1);
+		return (free(table->fork_locks), -1);
 	table->end_flag = 0;
 	return (0);
 }
