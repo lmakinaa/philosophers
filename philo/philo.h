@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 00:03:22 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 12:09:39 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct s_philosopher
 	long			last_ate;
 	int				times_ate;
 	int				think_print_flag;
-	int				eating;
 	struct s_table	*table;
 }				t_philo;
 
