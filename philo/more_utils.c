@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 00:15:05 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:26:25 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	destroy_mutexes(t_table *table)
 	i = -1;
 	while (++i < table->philo_nbr)
 		pthread_mutex_destroy(&table->fork_locks[i]);
+	free(table->fork_locks);
 	free(table->philosophers);
 	return (0);
 }

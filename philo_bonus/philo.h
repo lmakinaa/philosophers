@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 20:33:58 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:22:48 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ typedef struct s_table
 
 int		args_parse(int argc, char **argv, t_table *table);
 int		dinning(t_philo *philo);
+int		init_semaphores(t_table *table);
 
 // Some utils
 
 long	time_now(void);
 int		time_skip(t_philo *philo, long time_to_stop);
-int		init_semaphores(t_table *table);
 void	print(t_philo *philo, char *str);
 
 #endif

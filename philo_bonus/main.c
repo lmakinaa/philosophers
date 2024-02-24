@@ -6,12 +6,16 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 20:19:09 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/24 11:50:09 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/*
+* It waits for any child process (-1) to change status (end execution)
+* then it kill all other processes then it will close semaphores. 
+*/
 void	destroying_and_exiting(t_table *table)
 {
 	int	i;
@@ -53,7 +57,7 @@ int	main(int argc, char **argv)
 		table.philosophers[i].pid = fork();
 		if (table.philosophers[i].pid == -1)
 		{
-			write(2, "Error\n", 6);
+			write(2, "Error while creating processes\n", 31);
 			exit(1);
 		}
 		if (table.philosophers[i].pid == 0)
