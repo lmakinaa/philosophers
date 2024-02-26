@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/26 17:44:27 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/26 17:48:10 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	safe_exit(t_table *table)
 		max = table->time_to_eat;
 	else
 		max = table->time_to_sleep;
-	max = max + (max / 20);
+	max = max + (max / 30);
 	while (time_now() - start < max)
 		usleep(50);
 }
@@ -31,7 +31,6 @@ int	destroy_mutexes(t_table *table)
 {
 	int	i;
 
-	safe_exit(table);
 	pthread_mutex_destroy(&table->printing);
 	pthread_mutex_destroy(&table->checking);
 	i = -1;
