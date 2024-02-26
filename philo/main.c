@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 17:49:18 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/26 17:44:17 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	monitoring(t_table *table)
 			{
 				print("died", &table->philosophers[i]);
 				table->end_flag = 1;
-				return (safe_exit(table));
+				return ;
 			}
 			pthread_mutex_unlock(&table->checking);
 			usleep(100);
