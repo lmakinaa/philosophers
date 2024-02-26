@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 17:30:09 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/26 18:08:30 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	print(char *str, t_philo *philo);
 int		time_skip(t_table *table, long time_to_stop);
 int		is_finished(t_philo *philo);
 int		one_philo_dinner(t_philo *philo);
+int		check_if_a_philo_died(t_table *table);
 
 #endif
