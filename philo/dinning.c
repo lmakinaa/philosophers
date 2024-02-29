@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 19:00:40 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 17:26:18 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/29 13:23:04 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	*dinning(void *ptr)
 	philo = (t_philo *) ptr;
 	print("is thinking", philo);
 	if (philo->id % 2 == 0)
-		time_skip(philo->table, 1);
-	while (!philo->table->end_flag)
+		custom_usleep(philo->table->time_to_eat / 2);
+	while (!is_finished(philo->table))
 	{
 		if (philo->table->philo_nbr == 1)
 		{
