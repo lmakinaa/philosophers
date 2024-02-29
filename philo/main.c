@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/26 18:11:29 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/27 20:31:02 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	preparing_table(t_table *table)
 		return (free(table->fork_locks), -1);
 	if (pthread_mutex_init(&table->checking, NULL) != 0)
 		return (free(table->fork_locks), -1);
+	if (pthread_mutex_init(&table->end_lock, NULL) != 0)
+		return (free(table->fork_locks), -1);
 	table->end_flag = 0;
 	return (0);
 }
@@ -97,22 +99,40 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
+int	did_they_ate_enough(t_table *table)
+{
+	int	i;
+	int	n;
+
+	i = 0;
+	n = 0;
+	while (i < table->philo_nbr)
+	{
+		pthread_mutex_lock(&table->checking);
+		if (table->philosophers[i].times_ate >= table->times_must_eat
+			&& table->times_must_eat != -1)
+			n++;
+		pthread_mutex_unlock(&table->checking);
+		i++;
+	}
+	return (n);
+}
+
 void	monitoring(t_table *table)
 {
 	int	i;
 
-	while (!table->end_flag)
+	while (!is_finished(table))
 	{
 		if (check_if_a_philo_died(table))
 			return ;
 		usleep(100);
-		i = 0;
-		while (i < table->philo_nbr && table->times_must_eat != -1
-			&& table->philosophers[i].times_ate >= table->times_must_eat)
-			i++;
+		i = did_they_ate_enough(table);
 		if (table->philo_nbr == i)
 		{
+			pthread_mutex_lock(&table->end_lock);
 			table->end_flag = 1;
+			pthread_mutex_unlock(&table->end_lock);
 			return ;
 		}
 	}

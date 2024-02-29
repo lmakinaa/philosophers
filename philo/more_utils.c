@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/26 18:11:35 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/02/27 20:18:33 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	destroy_mutexes(t_table *table)
 	safe_exit(table);
 	pthread_mutex_destroy(&table->printing);
 	pthread_mutex_destroy(&table->checking);
+	pthread_mutex_destroy(&table->end_lock);
 	i = -1;
 	while (++i < table->philo_nbr)
 		pthread_mutex_destroy(&table->fork_locks[i]);
@@ -42,15 +43,15 @@ int	destroy_mutexes(t_table *table)
 	return (0);
 }
 
-int	is_finished(t_philo *philo)
+int	is_finished(t_table *table)
 {
-	pthread_mutex_lock(&philo->table->checking);
-	if (philo->table->end_flag)
+	pthread_mutex_lock(&table->end_lock);
+	if (table->end_flag)
 	{
-		pthread_mutex_unlock(&philo->table->checking);
+		pthread_mutex_unlock(&table->end_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->table->checking);
+	pthread_mutex_unlock(&table->end_lock);
 	return (0);
 }
 
@@ -59,14 +60,16 @@ int	check_if_a_philo_died(t_table *table)
 	int	i;
 
 	i = -1;
-	while (++i < table->philo_nbr && !table->end_flag)
+	while (++i < table->philo_nbr && !is_finished(table))
 	{
 		pthread_mutex_lock(&table->checking);
 		if (time_now() - table->philosophers[i].last_ate
 			> table->time_to_die)
 		{
 			print("died", &table->philosophers[i]);
+			pthread_mutex_lock(&table->end_lock);
 			table->end_flag = 1;
+			pthread_mutex_unlock(&table->end_lock);
 			return (1);
 		}
 		pthread_mutex_unlock(&table->checking);
