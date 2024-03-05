@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:47:10 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 20:33:33 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/05 15:13:42 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	philo_init(t_table *table)
 	int	i;
 
 	i = -1;
-	table->start_time = time_now();
 	table->end_flag = 0;
 	table->philosophers = malloc(table->philo_nbr * sizeof(t_philo));
 	if (!table->philosophers)

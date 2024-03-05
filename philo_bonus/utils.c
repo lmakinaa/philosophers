@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/23 20:34:08 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/02 10:24:54 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ long	time_now(void)
 	return (res);
 }
 
-int	time_skip(t_philo *philo, long time_to_stop)
+int	time_skip(long time_to_stop)
 {
 	long	start;
 
 	start = time_now();
-	while (time_now() - start < time_to_stop && !philo->table->end_flag)
-		usleep(100);
+	while (time_now() - start < time_to_stop)
+		usleep(500);
 	return (0);
 }
 
@@ -56,11 +56,14 @@ void	print(t_philo *philo, char *str)
 	long	start;
 
 	sem_wait(philo->table->printing);
+	sem_wait(philo->table->check);
 	if (!philo->table->end_flag)
 	{
+		sem_post(philo->table->check);
 		start = philo->table->start_time;
 		printf("%ld %d %s\n", time_now() - start, philo->id, str);
 	}
+	sem_post(philo->table->check);
 	if (str[0] != 'd')
 		sem_post(philo->table->printing);
 }

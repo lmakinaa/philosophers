@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/27 20:31:02 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/05 12:43:12 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,16 @@ void	monitoring(t_table *table)
 		if (check_if_a_philo_died(table))
 			return ;
 		usleep(100);
-		i = did_they_ate_enough(table);
-		if (table->philo_nbr == i)
+		if (table->times_must_eat != -1)
 		{
-			pthread_mutex_lock(&table->end_lock);
-			table->end_flag = 1;
-			pthread_mutex_unlock(&table->end_lock);
-			return ;
+			i = did_they_ate_enough(table);
+			if (table->philo_nbr == i)
+			{
+				pthread_mutex_lock(&table->end_lock);
+				table->end_flag = 1;
+				pthread_mutex_unlock(&table->end_lock);
+				return ;
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/29 13:22:59 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/05 13:18:38 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int		preparing_table(t_table *table);
 void	*dinning(void *ptr);
 void	monitoring(t_table *table);
 int		destroy_mutexes(t_table *table);
-int		join_all(t_table *table);
 int		eating(t_philo *philo);
 void	safe_exit(t_table *table);
 

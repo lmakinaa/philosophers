@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:08:37 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/02 10:17:51 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		init_semaphores(t_table *table);
 // Some utils
 
 long	time_now(void);
-int		time_skip(t_philo *philo, long time_to_stop);
+int		time_skip(long time_to_stop);
 void	print(t_philo *philo, char *str);
 
 #endif
