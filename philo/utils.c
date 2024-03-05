@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:16:00 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/29 13:44:05 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/05 13:18:30 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,6 @@ long	time_now(void)
 		return (-1);
 	res = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	return (res);
-}
-
-int	join_all(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->philo_nbr)
-	{
-		pthread_join(table->philosophers[i].thread, NULL);
-		i++;
-	}
-	return (0);
 }
 
 void	print(char *str, t_philo *philo)

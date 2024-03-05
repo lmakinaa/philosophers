@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 17:09:07 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/24 12:02:07 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/05 15:12:02 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,10 @@ void	*monitoring(void *ptr)
 		if (time_now() - philo->last_ate > philo->table->time_to_die)
 		{
 			print(philo, "died");
-			philo->table->end_flag = 1;
 			exit(1);
 		}
 		sem_post(philo->table->check);
-		if (philo->table->end_flag)
-			break ;
 		usleep(1000);
-		if (philo->times_ate >= philo->table->times_must_eat
-			&& philo->table->times_must_eat != -1)
-			break ;
 	}
 	return (0);
 }
@@ -44,11 +38,11 @@ void	eating(t_philo *philo)
 	sem_wait(philo->table->forks);
 	print(philo, "has taken a fork");
 	sem_wait(philo->table->check);
-	philo->times_ate++;
 	print(philo, "is eating");
 	philo->last_ate = time_now();
+	philo->times_ate++;
 	sem_post(philo->table->check);
-	time_skip(philo, philo->table->time_to_eat);
+	time_skip(philo->table->time_to_eat);
 	sem_post(philo->table->forks);
 	sem_post(philo->table->forks);
 }
@@ -61,19 +55,21 @@ int	dinning(t_philo *philo)
 		write(2, "Error while creating the verification thread\n", 45);
 		exit(1);
 	}
+	if (pthread_detach(philo->die_check) != 0)
+	{
+		write(2, "Error while detaching the verification thread\n", 46);
+		exit(1);
+	}
 	print(philo, "is thinking");
-	if (philo->id % 2 == 0)
-		usleep(500);
-	while (!philo->table->end_flag)
+	while (1)
 	{
 		eating(philo);
 		if (philo->times_ate >= philo->table->times_must_eat
 			&& philo->table->times_must_eat != -1)
 			break ;
 		print(philo, "is sleeping");
-		time_skip(philo, philo->table->time_to_sleep);
+		time_skip(philo->table->time_to_sleep);
 		print(philo, "is thinking");
 	}
-	pthread_join(philo->die_check, NULL);
 	exit(0);
 }
