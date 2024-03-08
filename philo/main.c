@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/03/05 12:43:12 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/06 14:51:05 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ int	preparing_table(t_table *table)
 int	main(int argc, char **argv)
 {
 	t_table		table;
+	int			parse;
 
 	if (!(argc == 5 || argc == 6))
 		return (write(2, "Invalide number of arguments\n", 29), -1);
-	if (args_parse(argc, argv, &table) == -1)
+	parse = args_parse(argc, argv, &table);
+	if (parse == -1)
 		return (write(2, "Error in parsing!\n", 18), 1);
-	else if (args_parse(argc, argv, &table) == -2)
+	else if (parse == -2)
 		return (0);
 	if (preparing_table(&table) == -1)
 		return (write(2, "Error while preparing the table\n", 32), 1);

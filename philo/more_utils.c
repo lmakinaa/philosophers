@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:02:19 by ijaija            #+#    #+#             */
-/*   Updated: 2024/02/29 13:52:57 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/05 16:28:20 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	safe_exit(t_table *table)
 		max = table->time_to_eat;
 	else
 		max = table->time_to_sleep;
-	max *= 2;
+	max *= 1.5;
 	while (time_now() - start < max)
 		usleep(500);
 }
