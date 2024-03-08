@@ -6,7 +6,7 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 11:33:49 by ijaija            #+#    #+#             */
-/*   Updated: 2024/03/05 13:18:38 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/03/06 14:59:13 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ typedef struct s_table
 {
 	int				philo_nbr;
 	long			start_time;
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	int				times_must_eat;
 	int				end_flag;
 	int				philos_that_ate_enough;
