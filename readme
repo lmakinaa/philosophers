@@ -1,0 +1,3 @@
+osascript -e 'tell application "loginwindow" to  «event aevtrlgo»'
+
+to logout 
