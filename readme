@@ -1,5 +1,0 @@
-lout = osascript -e 'tell application "loginwindow" to  «event aevtrlgo»'
-
-
-osascript -e 'tell application "Finder" to sleep'
- 

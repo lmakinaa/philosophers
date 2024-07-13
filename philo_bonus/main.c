@@ -6,16 +6,12 @@
 /*   By: ijaija <ijaija@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:55:08 by ijaija            #+#    #+#             */
-/*   Updated: 2024/03/05 15:11:24 by ijaija           ###   ########.fr       */
+/*   Updated: 2024/07/13 06:09:15 by ijaija           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/*
-* It waits for any child process (-1) to change status (end execution)
-* then it kill all other processes then it will close semaphores. 
-*/
 void	destroying_and_exiting(t_table *table)
 {
 	int	i;
